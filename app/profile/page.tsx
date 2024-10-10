@@ -14,8 +14,8 @@ interface UserData {
   birthDate: string;
   address: string;
   phone: string;
-  email: string; // Ajout de l'email au type UserData
-  image?: string; // Ajout d'une image de profil optionnelle
+  email: string;
+  image?: string;
 }
 
 const Profile = () => {
@@ -28,9 +28,9 @@ const Profile = () => {
     birthDate: '',
     address: '',
     phone: '',
-    email: '', // Ajout de l'email par défaut
+    email: '',
   });
-  const [tempUserData, setTempUserData] = useState<UserData>({ ...userData });
+  const [tempUserData, setTempUserData] = useState<UserData>(userData);
   const [addressValid, setAddressValid] = useState(true);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
@@ -38,18 +38,18 @@ const Profile = () => {
     if (status === 'unauthenticated') {
       router.push('/');
     } else if (session?.user) {
-      const user = session.user as UserData; // Type assertion
+      const user = session.user as UserData;
       const newUserData = {
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         birthDate: user.birthDate || '',
         address: user.address || '',
         phone: user.phone || '',
-        email: user.email || '', // Ajout de l'email
-        image: user.image || '', // Ajout de l'image
+        email: user.email || '',
+        image: user.image || '',
       };
       setUserData(newUserData);
-      setTempUserData(newUserData); // Mettez également à jour tempUserData
+      setTempUserData(newUserData);
     }
   }, [session, status, router]);
 
@@ -68,7 +68,9 @@ const Profile = () => {
         const coords = data.features[0].geometry.coordinates;
         const [lng, lat] = coords;
         const distance = calculateDistance(lat, lng, 48.8566, 2.3522);
-        return distance <= 50; // Vérifie si l'adresse est dans un rayon de 50 km de Paris
+        return distance <= 50;
+      } else {
+        toast.error('Aucune adresse trouvée.');
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -113,7 +115,7 @@ const Profile = () => {
       }
 
       toast.success('Profil enregistré avec succès !');
-      setUserData(tempUserData); // Mettez à jour userData après un succès
+      setUserData(tempUserData);
       setEditMode(false);
     } catch (error) {
       toast.error("Erreur lors de l'enregistrement");
@@ -140,11 +142,11 @@ const Profile = () => {
       <div className="profile-details">
         {userData.image && (
           <Image
-            src={userData.image} // Utilisez l'image de l'utilisateur
-            alt="Image de profil" // Texte alternatif pour l'accessibilité
-            width={100} // Spécifiez la largeur souhaitée
-            height={100} // Spécifiez la hauteur souhaitée
-            className="profile-image" // Conservez votre classe CSS si nécessaire
+            src={userData.image}
+            alt="Image de profil"
+            width={100}
+            height={100}
+            className="profile-image"
           />
         )}
         <p><strong>Email :</strong> {userData.email}</p>
