@@ -1,0 +1,217 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9fafc;
+  margin: 0;
+  padding: 20px;
+  color: #2c3e50;
+}
+
+.profile-container {
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.profile-container:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  background-color: #f0f8ff;
+}
+
+.profile-container h1 {
+  font-size: 32px;
+  text-align: center;
+  color: #3498db;
+  margin-bottom: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 70%;
+  margin-bottom: 20px;
+  border: 2px solid #ffffff;
+}
+
+.profile-details p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.edit-button,
+.logout-button,
+.submit-button,
+.cancel-button,
+.confirm-logout-button,
+.cancel-logout-button {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.edit-button {
+  background-color: #34b1db;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #2980b9;
+}
+
+.logout-button {
+  background-color: #3c3ce7;
+  color: white;
+}
+
+.logout-button:hover {
+  background-color: #2bc0af;
+}
+
+.submit-button {
+  background-color: #33687e;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #213691;
+}
+
+.cancel-button,
+.confirm-logout-button,
+.cancel-logout-button {
+  background-color: #780606;
+  color: white;
+}
+
+.cancel-button:hover,
+.confirm-logout-button:hover,
+.cancel-logout-button:hover {
+  background-color: #7f8c8d;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  padding: 10px;
+  border: 1px solid #780202;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.error {
+  color: rgb(0, 55, 255);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between; 
+}
+
+.submit-button,
+.cancel-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #4c90af; 
+  color: white;
+}
+
+.cancel-button {
+  background-color: #220503; 
+  color: white;
+}
+
+.submit-button:hover,
+.cancel-button:hover {
+  opacity: 0.9; 
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+}
+
+.popup-content {
+  background: white; 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.popup-actions {
+  margin-top: 20px; 
+}
+
+.confirm-logout-button,
+.cancel-logout-button {
+  margin: 0 10px; 
+  padding: 10px 20px; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirm-logout-button {
+  background-color: #120776; 
+  color: white;
+}
+
+.cancel-logout-button {
+  background-color: #7cb5cf; 
+  color: white;
+}
