@@ -2,8 +2,7 @@
 
 import { useSession, signIn, signOut } from 'next-auth/react';
 import './home.css';
-import { FaPen, FaSignOutAlt } from 'react-icons/fa'; 
-import Link from 'next/link';
+import { FaSignOutAlt } from 'react-icons/fa'; 
 import Image from 'next/image'; 
 
 const Home = () => {
@@ -18,20 +17,23 @@ const Home = () => {
             <p className="description">
               Connecté en tant que <span className="highlight">{session.user?.email}</span>
             </p>
-            <p className="description">  Désolé, votre session est expirée. Vous devez vous reconnecter.</p>
+            <p className="description">
+              Désolé, votre session est expirée. Vous devez vous reconnecter.
+            </p>
             <div className="button-group">
-             
               <button 
                 onClick={() => signOut()} 
                 className="button logout"
               >
-                <FaSignOutAlt className="icon" />  Reconnectez-vous
+                <FaSignOutAlt className="icon" /> Reconnectez-vous
               </button>
             </div>
           </>
         ) : (
           <>
-            <p className="description">Veuillez vous connecter pour accéder à votre profil</p>
+            <p className="description">
+              Veuillez vous connecter pour accéder à votre profil
+            </p>
             <button 
               onClick={() => signIn('google')} 
               className="button login google"

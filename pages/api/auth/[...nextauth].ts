@@ -14,8 +14,8 @@ export default NextAuth({
       session.user.id = token.sub; 
       return session;
     },
-    async redirect({ url, baseUrl }) {
-      return baseUrl + '/profile'; 
+    async redirect({ baseUrl }) {
+      return `${baseUrl}/profile`; 
     },
   },
 });

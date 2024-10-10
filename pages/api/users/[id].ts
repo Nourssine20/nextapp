@@ -4,31 +4,29 @@ import clientPromise from '../../../lib/mongodb';
 
 const parisCoords = { lat: 48.8566, lon: 2.3522 };
 
-
 const validateAddress = async (address: string) => {
   const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}`);
   const data = await response.json();
 
-  if (data && data.features && data.features.length > 0) {
-    const userCoords = data.features[0].geometry.coordinates; 
+  if (data?.features?.length > 0) {
+    const userCoords = data.features[0].geometry.coordinates;
     const distance = calculateDistance(parisCoords.lat, parisCoords.lon, userCoords[1], userCoords[0]);
-    return distance <= 50; 
+    return distance <= 50;
   }
   return false;
 };
 
-
 const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const toRad = (value: number) => (value * Math.PI) / 180;
-  const R = 6371; 
+  const R = 6371;
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
   const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLat / 2) ** 2 +
     Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.sin(dLon / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; 
+  return R * c;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -40,7 +38,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'PUT') {
     const { firstName, lastName, birthDate, address, phone } = req.body;
 
-    // Valider l'adresse
     const isValidAddress = await validateAddress(address);
     if (!isValidAddress) {
       return res.status(400).json({ error: 'L\'adresse doit être située à moins de 50 km de Paris.' });

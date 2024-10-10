@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -20,13 +20,13 @@ const Profile = () => {
   const router = useRouter();
   const [editMode, setEditMode] = useState(false);
   const [userData, setUserData] = useState<UserData>({
-    firstName: session?.user?.firstName || '',
-    lastName: session?.user?.lastName || '',
-    birthDate: session?.user?.birthDate || '',
-    address: session?.user?.address || '',
-    phone: session?.user?.phone || '',
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    address: '',
+    phone: '',
   });
-  const [tempUserData, setTempUserData] = useState<UserData>(userData);
+  const [tempUserData, setTempUserData] = useState<UserData>({ ...userData });
   const [addressValid, setAddressValid] = useState(true);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
@@ -34,20 +34,15 @@ const Profile = () => {
     if (status === 'unauthenticated') {
       router.push('/');
     } else if (session) {
+      const user = session.user;
       setUserData({
-        firstName: session.user.firstName || '',
-        lastName: session.user.lastName || '',
-        birthDate: session.user.birthDate || '',
-        address: session.user.address || '',
-        phone: session.user.phone || '',
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        birthDate: user.birthDate || '',
+        address: user.address || '',
+        phone: user.phone || '',
       });
-      setTempUserData({
-        firstName: session.user.firstName || '',
-        lastName: session.user.lastName || '',
-        birthDate: session.user.birthDate || '',
-        address: session.user.address || '',
-        phone: session.user.phone || '',
-      });
+      setTempUserData({ ...userData }); // Set tempUserData whenever userData is updated
     }
   }, [session, status, router]);
 
@@ -59,7 +54,7 @@ const Profile = () => {
   const checkAddressValidity = async (address: string) => {
     try {
       const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${address}&limit=1`);
-      if (!response.ok) throw new Error('Erreur lors de la validation de l\'adresse');
+      if (!response.ok) throw new Error("Erreur lors de la validation de l'adresse");
 
       const data = await response.json();
       if (data.features.length > 0) {
@@ -70,6 +65,7 @@ const Profile = () => {
       }
     } catch (error) {
       console.error('Erreur:', error);
+      toast.error("Erreur de validation d'adresse.");
     }
     return false;
   };
@@ -106,15 +102,14 @@ const Profile = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de l\'enregistrement du profil');
+        throw new Error("Erreur lors de l'enregistrement du profil");
       }
 
-      const result = await response.json();
       toast.success('Profil enregistré avec succès !');
       setUserData(tempUserData);
       setEditMode(false);
     } catch (error) {
-      toast.error('Erreur lors de l\'enregistrement');
+      toast.error("Erreur lors de l'enregistrement");
     }
   };
 

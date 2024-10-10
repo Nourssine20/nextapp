@@ -3,16 +3,13 @@
 import React from 'react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 const SigninWithGoogle: React.FC = () => {
-  const router = useRouter(); 
-
   const cardStyle = {
     border: '1px solid #ddd',
     borderRadius: '12px',
     padding: '40px',
-    textAlign: 'center',
+    textAlign: 'center' as const,
     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
     backgroundColor: '#fff',
     maxWidth: '400px',
@@ -43,11 +40,11 @@ const SigninWithGoogle: React.FC = () => {
       </p>
 
       <button
-        type='button'
+        type="button"
         style={buttonStyle}
-        onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => e.currentTarget.style.backgroundColor = '#357ae8'}
-        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => e.currentTarget.style.backgroundColor = '#4285F4'}
         onClick={() => signIn('google', { redirect: true, callbackUrl: '/profile' })}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#357ae8'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4285F4'}
       >
         <Image
           src="/google-logo.png"
