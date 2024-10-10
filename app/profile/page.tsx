@@ -14,6 +14,8 @@ interface UserData {
   birthDate: string;
   address: string;
   phone: string;
+  email: string; // Ajout de l'email au type UserData
+  image?: string; // Ajout d'une image de profil optionnelle
 }
 
 const Profile = () => {
@@ -26,6 +28,7 @@ const Profile = () => {
     birthDate: '',
     address: '',
     phone: '',
+    email: '', // Ajout de l'email par défaut
   });
   const [tempUserData, setTempUserData] = useState<UserData>({ ...userData });
   const [addressValid, setAddressValid] = useState(true);
@@ -34,7 +37,7 @@ const Profile = () => {
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/');
-    } else if (session) {
+    } else if (session?.user) {
       const user = session.user as UserData; // Type assertion
       const newUserData = {
         firstName: user.firstName || '',
@@ -42,12 +45,13 @@ const Profile = () => {
         birthDate: user.birthDate || '',
         address: user.address || '',
         phone: user.phone || '',
+        email: user.email || '', // Ajout de l'email
+        image: user.image || '', // Ajout de l'image
       };
       setUserData(newUserData);
       setTempUserData(newUserData); // Mettez également à jour tempUserData
     }
   }, [session, status, router]);
- 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -64,7 +68,7 @@ const Profile = () => {
         const coords = data.features[0].geometry.coordinates;
         const [lng, lat] = coords;
         const distance = calculateDistance(lat, lng, 48.8566, 2.3522);
-        return distance <= 50; // Assurez-vous que l'unité est en kilomètres
+        return distance <= 50; // Vérifie si l'adresse est dans un rayon de 50 km de Paris
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -134,16 +138,16 @@ const Profile = () => {
       <Toaster />
       <h1>Bienvenue, {userData.firstName} {userData.lastName}</h1>
       <div className="profile-details">
-        {session?.user?.image && (
+        {userData.image && (
           <Image
-            src={session.user.image} // Utilisez la source de l'image
+            src={userData.image} // Utilisez l'image de l'utilisateur
             alt="Image de profil" // Texte alternatif pour l'accessibilité
             width={100} // Spécifiez la largeur souhaitée
             height={100} // Spécifiez la hauteur souhaitée
             className="profile-image" // Conservez votre classe CSS si nécessaire
           />
         )}
-        <p><strong>Email :</strong> {session?.user?.email}</p>
+        <p><strong>Email :</strong> {userData.email}</p>
         <p><strong>Nom :</strong> {userData.lastName || 'Non spécifié'}</p>
         <p><strong>Prénom :</strong> {userData.firstName || 'Non spécifié'}</p>
         <p><strong>Date de naissance :</strong> {userData.birthDate || 'Non spécifié'}</p>
@@ -229,7 +233,7 @@ const Profile = () => {
           <div className="form-actions">
             <button type="submit" className="submit-button">Enregistrer</button>
             <button type="button" onClick={() => setEditMode(false)} className="cancel-button">Annuler</button>
-          </div>
+            </div>
         </form>
       )}
     </div>
@@ -237,3 +241,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
