@@ -1,3 +1,11 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:next/recommended"
+  ],
+  "plugins": ["next"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn"
+  }
 }
