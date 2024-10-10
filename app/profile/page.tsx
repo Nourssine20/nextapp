@@ -117,7 +117,11 @@ const Profile = () => {
       toast.success('Profil enregistré avec succès !');
       setUserData(tempUserData);
       setEditMode(false);
-    } catch (error) {
+    }
+     
+    catch (error) {
+      console.error(error);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       toast.error("Erreur lors de l'enregistrement");
     }
   };
