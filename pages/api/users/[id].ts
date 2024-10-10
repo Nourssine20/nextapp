@@ -4,7 +4,7 @@ import clientPromise from '../../../lib/mongodb';
 
 const parisCoords = { lat: 48.8566, lon: 2.3522 };
 
-const validateAddress = async (address: string) => {
+const validateAddress = async (address: string): Promise<boolean> => {
   const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}`);
   const data = await response.json();
 
@@ -16,9 +16,9 @@ const validateAddress = async (address: string) => {
   return false;
 };
 
-const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
   const toRad = (value: number) => (value * Math.PI) / 180;
-  const R = 6371;
+  const R = 6371; // Rayon de la Terre en km
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
   const a =
@@ -50,26 +50,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       );
 
       if (result.modifiedCount === 1) {
-        res.status(200).json({ message: 'User updated successfully' });
+        return res.status(200).json({ message: 'User updated successfully' });
       } else {
-        res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: 'User not found' });
       }
     } catch (error) {
-      res.status(500).json({ error: 'Unable to update user' });
+      console.error(error); // Ajoutez un log pour le débogage
+      return res.status(500).json({ error: 'Unable to update user' });
     }
   } else if (req.method === 'GET') {
     try {
       const user = await db.collection('users').findOne({ _id: new ObjectId(id as string) });
 
       if (user) {
-        res.status(200).json(user);
+        return res.status(200).json(user);
       } else {
-        res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: 'User not found' });
       }
     } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch user' });
+      console.error(error); // Ajoutez un log pour le débogage
+      return res.status(500).json({ error: 'Failed to fetch user' });
     }
   } else {
-    res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 }

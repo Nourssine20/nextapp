@@ -11,11 +11,11 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET!,
   callbacks: {
     async session({ session, token }) {
-      session.user.id = token.sub; 
+      session.user.id = token.sub || ''; // Assurez-vous que token.sub n'est pas undefined
       return session;
     },
     async redirect({ baseUrl }) {
-      return `${baseUrl}/profile`; 
+      return `${baseUrl}/profile`;
     },
   },
 });

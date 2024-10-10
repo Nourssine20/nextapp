@@ -12,7 +12,7 @@ interface User {
   createdAt: Date;
 }
 
-const validateAddress = async (address: string) => {
+const validateAddress = async (address: string): Promise<boolean> => {
   const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}`);
   const data = await response.json();
 
@@ -24,9 +24,9 @@ const validateAddress = async (address: string) => {
   return false;
 };
 
-const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
   const toRad = (value: number) => (value * Math.PI) / 180;
-  const R = 6371;
+  const R = 6371; // Rayon de la Terre en km
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
   const a =
@@ -60,18 +60,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const result = await db.collection('users').insertOne(newUser);
-      res.status(201).json({ message: 'User created successfully', userId: result.insertedId });
+      return res.status(201).json({ message: 'User created successfully', userId: result.insertedId });
     } catch (error) {
-      res.status(500).json({ error: 'Unable to create user' });
+      console.error(error); // Ajoutez un log pour le débogage
+      return res.status(500).json({ error: 'Unable to create user' });
     }
   } else if (req.method === 'GET') {
     try {
       const users = await db.collection('users').find({}).toArray();
-      res.status(200).json(users);
+      return res.status(200).json(users);
     } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch users' });
+      console.error(error); // Ajoutez un log pour le débogage
+      return res.status(500).json({ error: 'Failed to fetch users' });
     }
   } else {
-    res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 }

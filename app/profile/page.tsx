@@ -36,16 +36,18 @@ const Profile = () => {
       router.push('/');
     } else if (session) {
       const user = session.user as UserData; // Type assertion
-      setUserData({
+      const newUserData = {
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         birthDate: user.birthDate || '',
         address: user.address || '',
         phone: user.phone || '',
-      });
-      setTempUserData({ ...userData }); // Correction pour mettre à jour tempUserData
+      };
+      setUserData(newUserData);
+      setTempUserData(newUserData); // Mettez également à jour tempUserData
     }
   }, [session, status, router]);
+ 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -133,13 +135,14 @@ const Profile = () => {
       <h1>Bienvenue, {userData.firstName} {userData.lastName}</h1>
       <div className="profile-details">
         {session?.user?.image && (
- <Image
-    src={session.user.image} // Utilisez la source de l'image
-    alt="Image de profil" // Texte alternatif pour l'accessibilité
-    width={100} // Spécifiez la largeur souhaitée
-    height={100} // Spécifiez la hauteur souhaitée
-    className="profile-image" // Conservez votre classe CSS si nécessaire
-  />        )}
+          <Image
+            src={session.user.image} // Utilisez la source de l'image
+            alt="Image de profil" // Texte alternatif pour l'accessibilité
+            width={100} // Spécifiez la largeur souhaitée
+            height={100} // Spécifiez la hauteur souhaitée
+            className="profile-image" // Conservez votre classe CSS si nécessaire
+          />
+        )}
         <p><strong>Email :</strong> {session?.user?.email}</p>
         <p><strong>Nom :</strong> {userData.lastName || 'Non spécifié'}</p>
         <p><strong>Prénom :</strong> {userData.firstName || 'Non spécifié'}</p>
