@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { FaSignOutAlt, FaPen } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
+import Image from 'next/image';
 import './profile.css';
 
 interface UserData {
@@ -34,7 +35,7 @@ const Profile = () => {
     if (status === 'unauthenticated') {
       router.push('/');
     } else if (session) {
-      const user = session.user;
+      const user = session.user as UserData; // Type assertion
       setUserData({
         firstName: user.firstName || '',
         lastName: user.lastName || '',
@@ -42,7 +43,7 @@ const Profile = () => {
         address: user.address || '',
         phone: user.phone || '',
       });
-      setTempUserData({ ...userData }); // Set tempUserData whenever userData is updated
+      setTempUserData({ ...userData }); // Correction pour mettre à jour tempUserData
     }
   }, [session, status, router]);
 
@@ -61,7 +62,7 @@ const Profile = () => {
         const coords = data.features[0].geometry.coordinates;
         const [lng, lat] = coords;
         const distance = calculateDistance(lat, lng, 48.8566, 2.3522);
-        return distance <= 50;
+        return distance <= 50; // Assurez-vous que l'unité est en kilomètres
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -71,7 +72,7 @@ const Profile = () => {
   };
 
   const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
-    const earthRadius = 6371;
+    const earthRadius = 6371; // Rayon de la Terre en kilomètres
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLng = (lng2 - lng1) * (Math.PI / 180);
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -106,7 +107,7 @@ const Profile = () => {
       }
 
       toast.success('Profil enregistré avec succès !');
-      setUserData(tempUserData);
+      setUserData(tempUserData); // Mettez à jour userData après un succès
       setEditMode(false);
     } catch (error) {
       toast.error("Erreur lors de l'enregistrement");
@@ -132,8 +133,13 @@ const Profile = () => {
       <h1>Bienvenue, {userData.firstName} {userData.lastName}</h1>
       <div className="profile-details">
         {session?.user?.image && (
-          <img src={session.user.image} alt="Image de profil" className="profile-image" />
-        )}
+ <Image
+    src={session.user.image} // Utilisez la source de l'image
+    alt="Image de profil" // Texte alternatif pour l'accessibilité
+    width={100} // Spécifiez la largeur souhaitée
+    height={100} // Spécifiez la hauteur souhaitée
+    className="profile-image" // Conservez votre classe CSS si nécessaire
+  />        )}
         <p><strong>Email :</strong> {session?.user?.email}</p>
         <p><strong>Nom :</strong> {userData.lastName || 'Non spécifié'}</p>
         <p><strong>Prénom :</strong> {userData.firstName || 'Non spécifié'}</p>
