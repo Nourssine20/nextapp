@@ -218,7 +218,7 @@ const Profile = () => {
               required
               className="form-input"
             />
-            {!addressValid && <p className="error">L'adresse doit être dans un rayon de 50 km de Paris.</p>}
+            {!addressValid && <p className="error">L&apos;adresse doit être dans un rayon de 50 km de Paris.</p>}
           </div>
           <div className="form-group">
             <label>Numéro de téléphone :</label>
@@ -233,7 +233,7 @@ const Profile = () => {
           <div className="form-actions">
             <button type="submit" className="submit-button">Enregistrer</button>
             <button type="button" onClick={() => setEditMode(false)} className="cancel-button">Annuler</button>
-            </div>
+          </div>
         </form>
       )}
     </div>
@@ -241,4 +241,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
